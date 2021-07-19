@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<updateXml>
+    <createVersion version="V006">
+        <createDb name="Msg3.0">
+<!--            最新的版本  构建语句-->
+            <sql_createTable> create table if not exists tb_photo (path TEXT); </sql_createTable>
+        </createDb>
+
+    </createVersion>
+
+    <updateStep
+        versionFrom="v003,V004,V005"
+        versionTo="V006"
+    >
+<!--        数据    打开  -->
+        <updateDb name="Msg3.0">
+            <sql_before>
+                alter table tb_photo rename to bak_tb_photo;
+            </sql_before>
+<!--将原来的表中的数据 100条   迁移到新表 tb_time 检查   每一张表迁移过程  是1 不是 2-->
+            <sql_after>
+                insert into tb_photo( path) select path from bak_tb_photo;
+            </sql_after>
+            <sql_after>
+                drop table if exists bak_tb_photo;
+            </sql_after>
+        </updateDb>
+    </updateStep>
+</updateXml>
+
+
+
+
+
